@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-vo-tasklist'
+  name: require('./package').name
 };
