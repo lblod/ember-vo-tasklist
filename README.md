@@ -24,6 +24,7 @@ There is minimal css, which can be imported in host app styles/app.scss:
 
 `@import 'ember-vo-tasklist';`
 
+Make sure your model files are availble too in the host app.
 
 TODO
 ------------------------------------------------------------------------------
