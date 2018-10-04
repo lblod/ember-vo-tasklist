@@ -1,20 +1,35 @@
-ember-vo-tasklist
+ember-vo-tasklist [STUB]
 ==============================================================================
 
-[Short description of the addon.]
+Tasklist addon.
 
 Installation
 ------------------------------------------------------------------------------
 
 ```
-ember install ember-vo-tasklist
+ember install @lblod/ember-vo-tasklist
 ```
 
 
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+This addon provides the management of tasklists.
+This addon has as the extra feature of tasklists which can be re-used.
+Therefore, a decoupling from the tasklist vs. the completion of a task has been designed.
+
+See model files for more information about the model.
+
+There is minimal css, which can be imported in host app styles/app.scss:
+
+`@import 'ember-vo-tasklist';`
+
+
+TODO
+------------------------------------------------------------------------------
+As said, this is only a stub implementation. Only an already existing tasklist can be completed.
+So there is a lot todo before being a fullblown tasklist management addon.
+The templates are pretty basic too.
 
 
 Contributing
