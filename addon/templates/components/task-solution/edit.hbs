@@ -1,0 +1,11 @@
+<h1>{{taskSolution.task.title}}</h1>
+
+{{{taskSolution.task.description}}}
+
+{{input type="checkbox" checked=taskSolution.status click=(action "toggleStatus") }}
+
+{{#each sortedTaskSolutionChilds as |childSolution|}}
+  {{task-solution/edit taskSolution=childSolution}}
+{{/each}}
+
+{{yield}}

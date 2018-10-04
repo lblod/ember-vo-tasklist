@@ -1,0 +1,1 @@
+export { default } from '@lblod/ember-vo-tasklist/components/task-solution/edit';
