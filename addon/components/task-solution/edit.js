@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import layout from '../../templates/components/task-solution/edit';
 import { computed } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default Component.extend({
   layout,
@@ -11,9 +12,13 @@ export default Component.extend({
     return this.taskSolutionChilds.toArray().sort((a,b) => a.priority > b.priority);
   }),
 
+  setChilds: task(function *(){
+    this.set('taskSolutionChilds', yield this.taskSolution.taskSolutionChilds);
+  }),
+
   async didReceiveAttrs(){
     this._super(...arguments);
-    this.set('taskSolutionChilds', await this.taskSolution.taskSolutionChilds);
+    this.setChilds.perform();
   },
 
   actions:{

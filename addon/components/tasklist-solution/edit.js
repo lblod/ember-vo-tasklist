@@ -5,6 +5,7 @@ import findAsync from '../../utils/find-async';
 import flattenAsync from '../../utils/flatten-async';
 import mapAsync from '../../utils/map-async';
 import { sort } from '@ember/object/computed';
+import { task } from 'ember-concurrency';
 
 export default Component.extend({
   layout,
@@ -35,22 +36,22 @@ export default Component.extend({
     return taskSolution;
   },
 
-  async setTaskSolutions(){
-    let tasklist = await this.tasklistSolution.tasklist;
-    let topLevelTasks = await tasklist.tasks; //TODO: it seems we cannot fetch nested stuff async??
-    let taskSolutions = await flattenAsync((await this.tasklistSolution.get('taskSolutions')).toArray() || [],
+  setTaskSolutions: task(function *(){
+    let tasklist = yield this.tasklistSolution.tasklist;
+    let topLevelTasks = yield tasklist.tasks; //TODO: it seems we cannot fetch nested stuff async??
+    let taskSolutions = yield flattenAsync((yield this.tasklistSolution.get('taskSolutions')).toArray() || [],
                                                 async node => (await node.get('taskSolutionChilds')).toArray());
 
-    let updatedTaskSolutions = await mapAsync(topLevelTasks, async task => this.generateTaskSolutionTree(taskSolutions, task));
+    let updatedTaskSolutions = yield mapAsync(topLevelTasks, async task => this.generateTaskSolutionTree(taskSolutions, task));
 
     this.tasklistSolution.taskSolutions.setObjects(updatedTaskSolutions);
-    await this.tasklistSolution.save();
+    yield this.tasklistSolution.save();
     this.set('taskSolutions', this.tasklistSolution.taskSolutions);
-  },
+  }),
 
   didReceiveAttrs() {
     this._super(...arguments);
-    this.setTaskSolutions();
+    this.setTaskSolutions.perform();
     //TODO: remove unused task-solution
   }
 });
