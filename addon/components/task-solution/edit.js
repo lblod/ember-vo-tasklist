@@ -1,12 +1,15 @@
 import Component from '@ember/component';
 import layout from '../../templates/components/task-solution/edit';
-import { sort } from '@ember/object/computed';
+import { computed } from '@ember/object';
 
 export default Component.extend({
   layout,
   classNames: ['task-solution'],
-  sorting: Object.freeze(['task.priority']),
-  sortedTaskSolutionChilds: sort('taskSolutionChilds', 'sorting'),
+  sortedTaskSolutionChilds: computed('taskSolutionChilds', function(){
+    if(!this.taskSolutionChilds)
+      return [];
+    return this.taskSolutionChilds.toArray().sort((a,b) => a.priority > b.priority);
+  }),
 
   async didReceiveAttrs(){
     this._super(...arguments);
