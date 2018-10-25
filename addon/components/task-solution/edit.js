@@ -7,7 +7,7 @@ import mapAsync from '../../utils/map-async';
 export default Component.extend({
   layout,
   classNames: ['task-solution'],
- 
+
   setChilds: task(function *(){
     let taskSolChilds = yield this.taskSolution.taskSolutionChilds;
     //load tasks
