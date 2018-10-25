@@ -4,15 +4,12 @@ import { inject as service } from '@ember/service';
 import findAsync from '../../utils/find-async';
 import flattenAsync from '../../utils/flatten-async';
 import mapAsync from '../../utils/map-async';
-import { sort } from '@ember/object/computed';
 import { task } from 'ember-concurrency';
 
 export default Component.extend({
   layout,
   classNames: ['tasklist-solution'],
   store: service(),
-  sorting: Object.freeze(['task.priority']),
-  sortedTaskSolutions: sort('taskSolutions', 'sorting'),
 
   async generateTaskSolutionTree(taskSolutions, task, taskSolutionParent = null){
     let taskSolution = await this.findOrCreateTaskSolution(task, taskSolutions);
@@ -42,11 +39,12 @@ export default Component.extend({
     let taskSolutions = yield flattenAsync((yield this.tasklistSolution.get('taskSolutions')).toArray() || [],
                                                 async node => (await node.get('taskSolutionChilds')).toArray());
 
+    topLevelTasks = topLevelTasks.toArray().sort((a,b)=> a.priority - b.priority);
     let updatedTaskSolutions = yield mapAsync(topLevelTasks, async task => this.generateTaskSolutionTree(taskSolutions, task));
 
     this.tasklistSolution.taskSolutions.setObjects(updatedTaskSolutions);
     yield this.tasklistSolution.save();
-    this.set('taskSolutions', this.tasklistSolution.taskSolutions);
+    this.set('sortedTaskSolutions', this.tasklistSolution.taskSolutions);
   }),
 
   didReceiveAttrs() {

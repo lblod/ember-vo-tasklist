@@ -2,18 +2,17 @@ import Component from '@ember/component';
 import layout from '../../templates/components/task-solution/edit';
 import { computed } from '@ember/object';
 import { task } from 'ember-concurrency';
+import mapAsync from '../../utils/map-async';
 
 export default Component.extend({
   layout,
   classNames: ['task-solution'],
-  sortedTaskSolutionChilds: computed('taskSolutionChilds', function(){
-    if(!this.taskSolutionChilds)
-      return [];
-    return this.taskSolutionChilds.toArray().sort((a,b) => a.priority > b.priority);
-  }),
-
+ 
   setChilds: task(function *(){
-    this.set('taskSolutionChilds', yield this.taskSolution.taskSolutionChilds);
+    let taskSolChilds = yield this.taskSolution.taskSolutionChilds;
+    //load tasks
+    yield mapAsync(taskSolChilds, (c) => c.task);
+    this.set('sortedTaskSolutionChilds', taskSolChilds.toArray().sort((a,b) => a.get('task.priority') - b.get('task.priority')));
   }),
 
   async didReceiveAttrs(){
