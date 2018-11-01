@@ -1,6 +1,6 @@
 <h1>{{tasklistSolution.tasklist.name}}</h1>
 
-{{#each sortedTaskSolutions as |taskSolution|}}
-  {{task-solution/edit taskSolution=taskSolution}}
+{{#each tasks as |task|}}
+  {{task-solution/edit tasklistSolution=tasklistSolution task=task}}
 {{/each}}
 {{yield}}
