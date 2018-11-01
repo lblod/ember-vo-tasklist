@@ -9,12 +9,11 @@ export default async function flattenAsync(nodes, callChilds){
   if(nodes.length == 0){
     return [];
   }
-  let results = [ nodes[0] ];
   let childs =  await callChilds(nodes[0]);
   let childNodes = (await flattenAsync( childs, callChilds));
   let remaingNodes = (await flattenAsync( nodes.slice(1), callChilds));
 
-  results = [...results, ...childNodes];
+  let results = [...childNodes, nodes[0]];
   results = [...results, ...remaingNodes];
 
   return results;
