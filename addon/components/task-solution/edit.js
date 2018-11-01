@@ -1,8 +1,6 @@
 import Component from '@ember/component';
 import layout from '../../templates/components/task-solution/edit';
-import { computed } from '@ember/object';
 import { task } from 'ember-concurrency';
-import mapAsync from '../../utils/map-async';
 import findAsync from '../../utils/find-async';
 import { inject as service } from '@ember/service';
 
