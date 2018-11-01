@@ -26,6 +26,8 @@ There is minimal css, which can be imported in host app styles/app.scss:
 
 Make sure your model files are availble too in the host app.
 
+Tasklist and its solutions should be saved manually
+
 TODO
 ------------------------------------------------------------------------------
 As said, this is only a stub implementation. Only an already existing tasklist can be completed.
